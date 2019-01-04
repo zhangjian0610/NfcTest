@@ -1,6 +1,6 @@
-package com.laser.changevalue;
+package com.bupt.cardtest.changevalue;
 
-import com.laser.excelPOI.BaseChangeValue;
+import com.bupt.cardtest.excelPOI.BaseChangeValue;
 
 public class ChangeValueInteger extends BaseChangeValue {
 

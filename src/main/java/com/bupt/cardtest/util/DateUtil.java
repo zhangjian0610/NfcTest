@@ -1,13 +1,11 @@
-package com.laser.util;
+package com.bupt.cardtest.util;
+
+import org.apache.commons.lang3.time.DateUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
-import org.apache.commons.lang3.time.DateUtils;
-
-import com.laser.log.Log;
 
 /**
  * 日期工具类
@@ -66,12 +64,12 @@ public class DateUtil extends DateUtils {
 		if (pattern.equals("") || pattern.equals("null")) {
 			pattern = "yyyy-MM-dd HH:mm:ss";
 		}
-		return new java.text.SimpleDateFormat(pattern).format(date);
+		return new SimpleDateFormat(pattern).format(date);
 	}
 
 	/**
 	 * 将字符串转换为Date类型
-	 * 
+	 *
 	 * @param date
 	 *            字符串类型
 	 * @return 日期类型
@@ -82,7 +80,7 @@ public class DateUtil extends DateUtils {
 
 	/**
 	 * 将字符串转换为Date类型
-	 * 
+	 *
 	 * @param date
 	 *            字符串类型
 	 * @param pattern
@@ -98,9 +96,9 @@ public class DateUtil extends DateUtils {
 		}
 		Date d = null;
 		try {
-			d = new java.text.SimpleDateFormat(pattern).parse(date);
+			d = new SimpleDateFormat(pattern).parse(date);
 		} catch (ParseException pe) {
-			Log.info("转换日期格式错误");
+			//Log.info("转换日期格式错误");
 		}
 		return d;
 	}

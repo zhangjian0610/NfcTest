@@ -33,7 +33,14 @@
     var $table = $('#bootstrap-table');
     var iframeFileName=null;
     function getFile2(name){
-        iframeFileName = name;
+
+        //parent.window.location.href=getRootPath_web() + '/fileController/fileInfo';
+
+        var url = getRootPath_web() + "/fileController/fileInfo?filename="+name;
+
+        window.open(url,"_blank");
+        /*iframeFileName = name;
+        /*iframeFileName = name;
         $.ajax(
             {
                 //todo
@@ -53,7 +60,7 @@
                 {
                     ajaxDialogError(data);
                 }
-            });
+            });*/
 
     }
     $().ready(function () {

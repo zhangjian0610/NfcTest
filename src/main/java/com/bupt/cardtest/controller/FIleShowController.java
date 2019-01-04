@@ -1,5 +1,6 @@
 package com.bupt.cardtest.controller;
 
+import com.bupt.cardtest.changevalue.ChangeValueInteger;
 import com.bupt.cardtest.excelPOI.ExcelBulid;
 import com.bupt.cardtest.excelPOI.ExcelHeader;
 import com.bupt.cardtest.excelPOI.ExcelMessage;
@@ -74,7 +75,11 @@ public class FIleShowController extends BaseController{
      * */
 
     @RequestMapping(value = "/fileInfo")
-    public String fileinfo()throws Exception{
+    public String fileinfo(String filename)throws Exception{
+        //System.out.println("12345");
+
+        request.setAttribute("fileName",filename);
+
         this.getSessionInfo().getResourceMap().put("/fileController/recordDataGrid", "记录列表");
         return "/admin/file/fileInfo";
 
@@ -116,9 +121,11 @@ public class FIleShowController extends BaseController{
         ExcelHeader excelheadA3 = new ExcelHeader();
         excelheadA3.setShowValue("起始");
         excelheadA3.setHeadField("start");
+        excelheadA3.setBasechangevalue(new ChangeValueInteger());
         ExcelHeader excelheadA4 = new ExcelHeader();
         excelheadA4.setShowValue("结束");
         excelheadA4.setHeadField("end");
+        excelheadA4.setBasechangevalue(new ChangeValueInteger());
         ExcelHeader excelheadA5 = new ExcelHeader();
         excelheadA5.setShowValue("源");
         excelheadA5.setHeadField("src");
@@ -195,15 +202,16 @@ public class FIleShowController extends BaseController{
             } else {
                 sFileName = URLEncoder.encode(sFileName, "UTF8"); // 其他浏览器
             }
+
+            response.setContentType("text/javascript; charset=utf-8");
+
             response.setHeader("Content-Disposition", "attachment;filename=" + sFileName);
             response.addHeader("Pargam", "no-cache");
             response.setHeader("Connection", "close");
             response.addHeader("Cache-Control", "no-cache");
+
             wb.get(0).write(response.getOutputStream());
         }
-
-
-
     }
 
 
