@@ -12,24 +12,25 @@
                       th:action="@{/fileController/download(fileName=${fileName})}"
                       method="post">
                     <div class="pull-left columns-left">
-                        <input id="name" class="form-control" placeholder="请输入设备ID" type="text" name="deviceId" maxlength="20px" />
+                        <button  id="btn_filter" type="button"  class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <span class="glyphicon glyphicon-th-list"></span>筛选
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li role="menuitem"><label><input type="checkbox" id="REQA" value="REQA" checked="checked" onclick="isShow(this.value,this.checked)"> REQA</label></li>
+                            <li role="menuitem"><label><input type="checkbox" id="ANTICOLL" value="ANTICOLL" checked="checked" onclick="isShow(this.value,this.checked)"> ANTICOLL</label></li>
+                            <li role="menuitem"><label><input type="checkbox" id="RATS" value="RATS" checked="checked" onclick="isShow(this.value,this.checked)"> RATS</label></li>
+                        </ul>
                     </div>
+                    <!--<div class="pull-left columns-left">-->
+                        <!--<input id="name" class="form-control" placeholder="请输入设备ID" type="text" name="deviceId" maxlength="20px" />-->
+                    <!--</div>-->
                     <div class="pull-left columns-left">
                         <!--th:if="${#maps.containsKey(session.sessionInfo.resourceMap,'/fileController/download')}">-->
                         <button id="btn_download" type="button" class="btn btn-default">
                             <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>导出EXCEL
                         </button>
                     </div>
-                    <div class="pull-left columns-left">
-                        <button id="btn_search" type="button" class="btn btn-default">
-                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>搜索
-                        </button>
-                    </div>
-                    <div class="pull-left columns-left">
-                        <button id="btn_empty" type="button" class="btn btn-default">
-                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>清空
-                        </button>
-                    </div>
+
 
                 </form>
             </div>
@@ -46,7 +47,28 @@
     var $table = $('#bootstrap-table');
 
 
+
+    function isShow(value,isChecked){
+
+        var Array=$table.bootstrapTable("getData",true)
+        var len=Array.length
+
+
+        for (let i=0;i<len;i++){
+            if(Array[i]["annotation"]==value){
+                if(isChecked){
+                    $table.bootstrapTable('showRow', {uniqueId:i+1});}
+                else{
+                    $table.bootstrapTable('hideRow', {uniqueId:i+1});}
+                }
+
+            }
+
+    }
+
     $().ready(function () {
+
+
         function queryParams(params) {
             var temp =
                 { //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
@@ -59,6 +81,7 @@
                     //fileName: iframeFileName,
                 };
             return temp;
+
         }
         $("#toolbar").on("click", "#btn_download", function(){
             $("#toolbar").on("click", "#btn_download", function(){
@@ -117,7 +140,7 @@
                 url: rootPath + "/fileController/recordDataGrid?fileName="+[[${fileName}]],//请求后台的URL（*）
                 method: 'post', //请求方式（*）
                 toolbar: "#toolbar",
-                uniqueId: "id", //每一行的唯一标识，一般为主键列
+                uniqueId: "sid", //每一行的唯一标识，一般为主键列
                 //striped : true, //是否显示行间隔色
                 cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
                 pagination: true, //是否显示分页（*）
@@ -144,11 +167,17 @@
                     {
                         field: 'start',
                         title: '起始',
+                        formatter: function (value, row, index) {
+                            return value/1000;
+                        }
                     },
 
                     {
                         field: 'end',
                         title: '结束',
+                        formatter: function (value, row, index) {
+                            return value/1000;
+                        }
                     },
                     {
                         field: 'last',
@@ -157,6 +186,9 @@
                     {
                         field:'interval',
                         title:'指令间隔',
+                        formatter: function (value, row, index) {
+                            return value/1000;
+                        }
                     },
                     {
                         field: 'src',
@@ -192,8 +224,10 @@
             $table.bootstrapTable('resetView');
 
         });
-        $table.bootstrapTable('hideColumn', 'createdatetime');
-        $table.bootstrapTable('hideColumn', 'validdatetime');
+        //$table.bootstrapTable('hideColumn', 'createdatetime');
+        //$table.bootstrapTable('hideColumn', 'validdatetime');
+
+
     });
     /*]]>*/
 </script>
