@@ -1,6 +1,8 @@
 package com.bupt.cardtest.model.bean;
 
-public class RecordKey {
+import com.bupt.cardtest.model.pagebean.PageHelper;
+
+public class RecordKey extends PageHelper {
     private Integer start;
 
     private String deviceId;

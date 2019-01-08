@@ -12,6 +12,17 @@
     <result column="annotation" jdbcType="VARCHAR" property="annotation" />
     <result column="sid" jdbcType="INTEGER" property="sid" />
   </resultMap>
+  <resultMap id="pageResult" type="com.bupt.cardtest.model.pagebean.RecordPage">
+    <id column="start" jdbcType="INTEGER" property="start" />
+    <id column="device_id" jdbcType="VARCHAR" property="deviceId" />
+    <id column="file_name" jdbcType="VARCHAR" property="fileName" />
+    <result column="end" jdbcType="INTEGER" property="end" />
+    <result column="src" jdbcType="VARCHAR" property="src" />
+    <result column="data" jdbcType="VARCHAR" property="data" />
+    <result column="crc" jdbcType="VARCHAR" property="crc" />
+    <result column="annotation" jdbcType="VARCHAR" property="annotation" />
+    <result column="sid" jdbcType="INTEGER" property="sid" />
+  </resultMap>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -270,4 +281,37 @@
       and device_id = #{deviceId,jdbcType=VARCHAR}
       and file_name = #{fileName,jdbcType=VARCHAR}
   </update>
+
+
+
+  <select id="dataGrid" parameterType="com.bupt.cardtest.model.bean.Record"
+          resultMap="pageResult">
+
+    SELECT
+    device_id,file_name,start,end,src,data,crc,annotation,sid
+    FROM
+    record
+    WHERE 1=1
+    <if test="fileName!= null and fileName!= ''">
+      and file_name=#{fileName}
+    </if>
+    ORDER BY
+    sid
+
+  </select>
+
+  <select id="countDataGrid" parameterType="com.bupt.cardtest.model.bean.Record"
+          resultType="java.lang.Long">
+    select
+    count(*)
+    from
+    record
+    where 1=1
+    <if test="fileName!= null and fileName!= ''">
+      and file_name=#{fileName}
+    </if>
+    order by
+    sid
+
+  </select>
 </mapper>

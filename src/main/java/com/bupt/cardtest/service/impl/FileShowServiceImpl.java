@@ -10,8 +10,10 @@ import com.bupt.cardtest.model.bean.UpfileExample;
 import com.bupt.cardtest.model.pageModel.DataGrid;
 import com.bupt.cardtest.model.pagebean.AdminDevicePage;
 import com.bupt.cardtest.model.pagebean.AdminPage;
+import com.bupt.cardtest.model.pagebean.RecordPage;
 import com.bupt.cardtest.service.FileShowService;
 import com.bupt.cardtest.util.Constant;
+import com.bupt.cardtest.util.RecordShow;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,14 +62,16 @@ public class FileShowServiceImpl implements FileShowService {
      * 获取记录列表
      * */
     @Override
-    public DataGrid recordDataGrid(Upfile upfile) {
-        PageHelper.startPage(upfile.getPage(), upfile.getRows());//设置分页
+    public DataGrid recordDataGrid(Record record) {
+        PageHelper.startPage(record.getPage(), record.getRows());//设置分页
         DataGrid dg = new DataGrid();
-        RecordExample recordExample=new RecordExample();
+        /*RecordExample recordExample=new RecordExample();
         recordExample.createCriteria().andFileNameEqualTo(upfile.getFileName());
         recordExample.setOrderByClause("sid ASC");
-        List<Record> l=recordDao.selectByExample(recordExample);
-        Long total=recordDao.countByExample(recordExample);
+        List<Record> l=recordDao.selectByExample(recordExample);*/
+        List<RecordPage> l=recordDao.dataGrid(record);
+        RecordShow.recordshow(l);
+        Long total=recordDao.countDataGrid(record);
 
 
         dg.setRows(l);
@@ -78,10 +82,13 @@ public class FileShowServiceImpl implements FileShowService {
 
 
     @Override
-    public List<Record> download(String filename) {
-        RecordExample recordExample=new RecordExample();
+    public List<RecordPage> download(Record record) {
+        /*RecordExample recordExample=new RecordExample();
         recordExample.createCriteria().andFileNameEqualTo(filename);
         recordExample.setOrderByClause("sid ASC");
-        return recordDao.selectByExample(recordExample);
+        return recordDao.selectByExample(recordExample);*/
+        List<RecordPage> l=recordDao.dataGrid(record);
+        RecordShow.recordshow(l);
+        return l;
     }
 }

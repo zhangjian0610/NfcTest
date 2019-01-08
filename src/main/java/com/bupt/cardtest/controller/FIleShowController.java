@@ -11,6 +11,7 @@ import com.bupt.cardtest.model.pageModel.DataGrid;
 import com.bupt.cardtest.model.pageModel.SessionInfo;
 import com.bupt.cardtest.model.pagebean.AdminDevicePage;
 import com.bupt.cardtest.model.pagebean.AdminPage;
+import com.bupt.cardtest.model.pagebean.RecordPage;
 import com.bupt.cardtest.service.FileShowService;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,9 +94,9 @@ public class FIleShowController extends BaseController{
      * */
     @RequestMapping(value ="/recordDataGrid")
     @ResponseBody
-    public DataGrid recordDataGrid(Upfile upfile){
+    public DataGrid recordDataGrid(Record record){
         DataGrid dg=new DataGrid();
-        dg=fileShowService.recordDataGrid(upfile);
+        dg=fileShowService.recordDataGrid(record);
 
         return dg;
 
@@ -107,9 +108,9 @@ public class FIleShowController extends BaseController{
      *
      * */
     @RequestMapping(value = "/download", method = RequestMethod.POST)
-    public void download(@RequestParam("fileName") String filename, HttpServletResponse response) throws Exception{
+    public void download(Record record, HttpServletResponse response) throws Exception{
 
-        List<Record> list=fileShowService.download(filename);
+        List<RecordPage> list=fileShowService.download(record);
         List<ExcelMessage> message = new ArrayList<ExcelMessage>();
         List<ExcelHeader> head = new ArrayList<ExcelHeader>();
         ExcelHeader excelheadA1 = new ExcelHeader();
@@ -139,10 +140,24 @@ public class FIleShowController extends BaseController{
         excelheadA8.setShowValue("注释");
         excelheadA8.setHeadField("annotation");
 
+        ExcelHeader excelheadA9=new ExcelHeader();
+        excelheadA9.setShowValue("指令时长");
+        excelheadA9.setHeadField("last");
+        excelheadA9.setBasechangevalue(new ChangeValueInteger());
+
+        ExcelHeader excelheadA10=new ExcelHeader();
+        excelheadA10.setShowValue("间隔时长");
+        excelheadA10.setHeadField("interval");
+        excelheadA10.setBasechangevalue(new ChangeValueInteger());
+
         head.add(excelheadA1);
         head.add(excelheadA2);
         head.add(excelheadA3);
         head.add(excelheadA4);
+
+        head.add(excelheadA9);
+        head.add(excelheadA10);
+
         head.add(excelheadA5);
         head.add(excelheadA6);
         head.add(excelheadA7);
